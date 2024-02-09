@@ -4,7 +4,7 @@ import ListProducts from './components/ListProducts';
 import CreateProduct from './components/CreateProduct';
 import EditProduct from './components/EditProduct';
 import ShowProduct from './components/ShowProduct';
-import ImageUploader from './components/ImageUploader';
+import PageNotFound from './components/PageNotFound';
 
 const App = () => {
   return (
@@ -30,11 +30,13 @@ const App = () => {
           <Route path="/products/create" element={<CreateProduct />} />
           <Route path="/products/:id/edit" element={<EditProduct />} />
           <Route path="/products/:id" element={<ShowProduct />} />
-          <Route path="/test" element={<ImageUploader />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>
     </Router>
   );
 };
+
+
 
 export default App;

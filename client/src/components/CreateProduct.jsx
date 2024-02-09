@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from "react-router-dom";
 const CreateProduct = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -12,7 +12,7 @@ const CreateProduct = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -43,8 +43,12 @@ const CreateProduct = () => {
       });
       console.log(data.data);
       setSuccess(true);
+      setTimeout(()=>{
+        navigate('/');
+    }, 1000);
+
     } catch (error) {
-      setError(error.response.data.errors);
+      setError(error.response.data.message);
     }
 
     setLoading(false);

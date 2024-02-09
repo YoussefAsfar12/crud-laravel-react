@@ -23,6 +23,7 @@ const ListProducts = () => {
       });
   }, []);
 
+  
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this product?');
     if (confirmDelete) {
@@ -41,10 +42,11 @@ const ListProducts = () => {
       <h2>Products</h2>
       {loading ? (
         <p>Loading...</p>
-      ) : (
+      ) :products.length>0 && (
         <table className="table table-bordered">
           <thead className="table-dark">
             <tr>
+              <th>ID:</th>
               <th>Name</th>
               <th>Description</th>
               <th>Price</th>
@@ -58,6 +60,7 @@ const ListProducts = () => {
           <tbody>
             {products.map(product => (
               <tr key={product.id}>
+                <td>{product.id}</td>
                 <td>{product.name}</td>
                 <td>{product.description}</td>
                 <td>${product.price}</td>

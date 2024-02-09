@@ -1,6 +1,6 @@
 import  { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EditProduct = () => {
   const productId = useParams().id;
@@ -12,15 +12,16 @@ const EditProduct = () => {
     quantity: '',
     image: null,
   });
-  const [errors, setErrors] = useState(null);
+  const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
+  const Navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
-      setErrors(null);
+      setError(null);
 
       try {
         const response = await axios.get(`http://localhost:8000/api/products/${productId}`);
@@ -37,7 +38,7 @@ const EditProduct = () => {
         if (error.response && error.response.status === 404) {
           setNotFound(true);
         } else {
-          setErrors(error.response ? error.response.data.message : 'An error occurred');
+          setError(error.response ? error.response.data.message : 'An error occurred');
         }
         setLoading(false);
       }
@@ -58,7 +59,7 @@ const EditProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setErrors(null);
+    setError(null);
 
     try {
       const formDataObj = {
@@ -67,16 +68,20 @@ const EditProduct = () => {
         price: formData.price,
         quantity: formData.quantity,
         image: formData.image,
+        _method:"PUT"
       };
 
-      const validated = await axios.put(`http://localhost:8000/api/products/${productId}`, formDataObj);
-      console.log(validated.data);
+       await axios.post(`http://localhost:8000/api/products/${productId}`, formDataObj,{
+        headers:{'Content-Type':"multipart/form-data"}
+      });
       setSuccess(true);
     } catch (error) {
-      setErrors(error.response ? error.response.data.errors : ['An error occurred']);
+      setError( error.response.data.message );
     }
-
     setLoading(false);
+    setTimeout(()=>{
+      Navigate('/')
+    },1000)
   };
 
   return (
@@ -85,13 +90,9 @@ const EditProduct = () => {
       {success && <p className="alert alert-success">Product updated successfully!</p>}
       {notFound && <p className="alert alert-danger">Product not found</p>}
 
-      {errors && (
+      {error && (
         <div className="alert alert-danger">
-          <ul>
-            {errors.map((errorMessage, index) => (
-              <li key={index}>{errorMessage}</li>
-            ))}
-          </ul>
+         <p>{error}</p>
         </div>
       )}
 

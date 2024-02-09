@@ -45,9 +45,7 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png',
         ]);
         
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+
         $validated= $validator->validated();
         try {
             if($request->hasFile('image')){
@@ -63,6 +61,7 @@ class ProductController extends Controller
                 'quantity'=>$validated['quantity'],
                 'image'=>$validated['image'],
             ]);
+
 
             return response()->json(['message' => 'Product created successfully.', 'product' => $product], 201);
         } catch (\Exception $e) {
@@ -102,22 +101,12 @@ class ProductController extends Controller
             'image' => 'nullable|image',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);      
-        }
-        
         $validated = $validator->validated();
-
-
-
-
         try {
             $product = Product::find($id);
             if (!$product) {
                 return response()->json(['message' => 'Product not found.'], 404);
             }
-
-
 
             if($request->hasFile('image')){
                 if($product->image){
@@ -152,8 +141,10 @@ class ProductController extends Controller
             if (!$product) {
                 return response()->json(['message' => 'Product not found.'], 404);
             }
+            if($product->image){
+                Storage::disk("public")->delete($product->image);
+            }
             $product->delete();
-            Storage::disk("public")->delete($product->image);
             return response()->json(['message' => 'Product deleted successfully.'], 204);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to delete product.'], 500);
@@ -186,9 +177,18 @@ class ProductController extends Controller
         
     //     // return response()->json([ "image"=>"false"]);
     // }
-    public function updateImage(Request $request, $imageName)
-{
-    return response()->json(['success' => true]);
+
+    // if($request->hasFile("image")){
+        // return response()->json(['message' => "true","image"=>$request->image]);
+    // }
+    // return response()->json(['message'=>"false"]);
+    
+    // if($request->hasFile("image")){
+    //     return response()->json(['success' => true]);
+    // }else{
+    //     return response()->json(['success' => false]);
+
+    // }
 
 //     if ($request->hasFile('image')) {
 //         $newImage = $request->file('image');
@@ -202,8 +202,8 @@ class ProductController extends Controller
 //     }
 
 //     return response()->json(['success' => false, 'message' => 'No image uploaded']);
-// }
-
 
 
 }
+
+

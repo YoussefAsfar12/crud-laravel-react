@@ -1,6 +1,7 @@
 import  { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import PageNotFound from "./PageNotFound";
 
 const ShowProduct = () => {
   const productId = useParams().id;
@@ -21,7 +22,11 @@ const ShowProduct = () => {
         setProduct(response.data);
         setLoading(false);
       } catch (error) {
-        setNotFound(true);
+        if (error.response && error.response.status === 404) {
+          setNotFound(true);
+        } else {
+          console.error("Error fetching product:", error);
+        }
         setLoading(false);
       }
     };
@@ -48,8 +53,10 @@ const ShowProduct = () => {
 
   return (
     <div className="container mt-4">
-      {notFound && <p className="alert alert-danger">Product not found</p>}
-      {!loading && product && (
+      {notFound ? (
+        // Display NotFound component if product is not found
+        <PageNotFound />
+      ) : !loading && product ? (
         <div className="card">
           <div className="card-header">
             <h2 className="card-title">Product Details</h2>
@@ -92,6 +99,8 @@ const ShowProduct = () => {
             </div>
           </div>
         </div>
+      ) : (
+        <p>Loading...</p>
       )}
     </div>
   );

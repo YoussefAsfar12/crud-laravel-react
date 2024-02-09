@@ -38,4 +38,4 @@ Route::put('products/{id}', [ProductController::class, 'update']);
 Route::delete('products/{id}', [ProductController::class, 'destroy']);
 
 
-Route::post('/update/{id}', [ProductController::class, 'updateImage']);
+Route::put('/update/{id}', [ProductController::class, 'updateImage']);
