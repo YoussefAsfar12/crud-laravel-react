@@ -68,7 +68,7 @@ const ImageUploader = () => {
     };
     try {
       console.log(formData);
-      // const response = await axios.put("http://localhost:8000/api/update/2",formData);
+      const response = await axios.put("http://localhost:8000/api/update/2",formData);
 
       // // Handle the response as needed
       // console.log(response);
