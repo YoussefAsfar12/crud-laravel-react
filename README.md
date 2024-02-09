@@ -19,11 +19,13 @@ Before you begin, ensure you have met the following requirements:
 
 
 2. **Install dependencies for the client (React frontend)**:
+   
 cd client
 
 npm install
 
 4. **Install dependencies for the server (Laravel backend)**:
+   
 cd ../server
 
 composer install
