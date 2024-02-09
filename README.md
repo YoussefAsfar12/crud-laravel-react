@@ -20,16 +20,18 @@ Before you begin, ensure you have met the following requirements:
 
 2. **Install dependencies for the client (React frontend)**:
 cd client
+
 npm install
 
-3. **Install dependencies for the server (Laravel backend)**:
+4. **Install dependencies for the server (Laravel backend)**:
 cd ../server
+
 composer install
 
 
 
 
-4. **Database Setup**:
+6. **Database Setup**:
 
 Create a new database in MySQL crud_api
 Update the database configurations in the .env file with  database crud_api.
